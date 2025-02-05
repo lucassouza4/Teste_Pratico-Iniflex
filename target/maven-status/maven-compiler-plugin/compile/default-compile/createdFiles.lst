@@ -1,4 +1,9 @@
+com\iniflex\testepratico\dao\FuncionarioDaoImpl.class
+com\iniflex\testepratico\service\FuncionarioServiceImpl.class
 com\iniflex\testepratico\model\Funcionario.class
+com\iniflex\testepratico\service\FuncionarioService.class
+com\iniflex\testepratico\util\JPA.class
+com\iniflex\testepratico\dao\FuncionarioDao.class
 com\iniflex\testepratico\TestePratico.class
 com\iniflex\testepratico\model\Pessoa.class
 com\iniflex\testepratico\util\DataFormat.class
