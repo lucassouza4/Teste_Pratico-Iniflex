@@ -111,10 +111,25 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
     public List<Funcionario> findAll() {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
-            TypedQuery<Funcionario> query = em.createQuery("SELECT f FROM Funcionario f", Funcionario.class);
+            TypedQuery<Funcionario> query = em.createQuery("SELECT f FROM Funcionario f ORDER BY f.nome", Funcionario.class);
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException("Erro ao buscar funcionários", e);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Funcionario> findByAniversarioMeses(List<Integer> meses) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            TypedQuery<Funcionario> query = em.createQuery(
+                "SELECT f FROM Funcionario f WHERE MONTH(f.dataNascimento) IN :meses ORDER BY f.dataNascimento", Funcionario.class);
+            query.setParameter("meses", meses);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar funcionários por mês de aniversário", e);
         } finally {
             em.close();
         }

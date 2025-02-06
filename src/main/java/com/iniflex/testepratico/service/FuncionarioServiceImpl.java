@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -207,10 +208,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public void findAllFuncionarios() {
-        List<Funcionario> funcionarios =  this.funcionarioDao.findAll()
-            .stream()
-            .sorted(Comparator.comparing(Funcionario::getNome))
-            .collect(Collectors.toList());
+        List<Funcionario> funcionarios =  this.funcionarioDao.findAll();
         funcionarios.forEach(System.out::println);
     }
 
@@ -251,5 +249,24 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             BigDecimal qtdSalarios = funcionario.getSalario().divide(salarioMinimo, 2, RoundingMode.HALF_UP);
             System.out.println("  - " + funcionario.getNome() + ": " + qtdSalarios);
         });
+    }
+
+    @Override
+    public void imprimirAniversariantes(BufferedReader reader) {
+        try {
+            System.out.println("Quais os meses? (ex.: 10,12)");
+            String input = reader.readLine(); // Pode lançar IOException
+
+            List<Integer> meses = Arrays.stream(input.split(","))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+
+            List<Funcionario> funcionarios = funcionarioDao.findByAniversarioMeses(meses);
+            funcionarios.forEach(System.out::println);
+        } catch (IOException e) {
+            System.err.println("Erro ao ler a entrada: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Erro: Certifique-se de inserir números separados por vírgula.");
+        }
     }
 }

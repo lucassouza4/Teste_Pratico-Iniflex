@@ -17,5 +17,6 @@ public interface FuncionarioDao {
     void update(List<Funcionario> funcionarios);
     void delete(Long id);
     Funcionario findById(Long id);
+    List<Funcionario> findByAniversarioMeses(List<Integer> meses);
     List<Funcionario> findAll();
 }

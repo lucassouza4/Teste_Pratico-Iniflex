@@ -6,7 +6,7 @@
 - [x] **3.4** – Os funcionários receberam 10% de aumento de salário, atualizar a lista de funcionários com novo valor.
 - [x] **3.5** – Agrupar os funcionários por função em um `Map<String, List<Funcionario>>`
 - [x] **3.6** – Imprimir os funcionários, agrupados por função.
-- [ ] **3.8** – Imprimir os funcionários que fazem aniversário nos meses `10` e `12`.
+- [x] **3.8** – Imprimir os funcionários que fazem aniversário nos meses `10` e `12`.
 - [ ] **3.9** – Imprimir o funcionário com a maior idade, exibindo os atributos: **nome** e **idade**.
 - [x] **3.10** – Imprimir a lista de funcionários por ordem alfabética.
 - [x] **3.11** – Imprimir o total dos salários dos funcionários.
