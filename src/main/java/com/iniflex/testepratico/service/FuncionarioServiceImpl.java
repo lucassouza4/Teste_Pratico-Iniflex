@@ -32,17 +32,17 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     private FuncionarioServiceImpl(FuncionarioDao funcionarioDao) {
         this.funcionarioDao = funcionarioDao;
     }
-    
-    public static FuncionarioServiceImpl build(FuncionarioDao funcionarioDao){
+
+    public static FuncionarioServiceImpl build(FuncionarioDao funcionarioDao) {
         return new FuncionarioServiceImpl(funcionarioDao);
     }
 
     @Override
-    public void salvarFuncionarios(List<Funcionario> funcionarios){
+    public void salvarFuncionarios(List<Funcionario> funcionarios) {
         funcionarioDao.salvar(funcionarios);
         System.out.println("Funcionários salvos");
     }
-    
+
     @Override
     public void salvarFuncionario(BufferedReader reader) {
         try {
@@ -52,11 +52,31 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             System.out.println("Data de nascimento (formato dd/MM/yyyy): ");
             String dataNascimentoStr = reader.readLine();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataNascimento = LocalDate.parse(dataNascimentoStr, formatter);
+            LocalDate dataNascimento;
+            try {
+                dataNascimento = LocalDate.parse(dataNascimentoStr, formatter);
+                if (!dataNascimentoStr.equals(formatter.format(dataNascimento))) {
+                    System.out.println("Data de nascimento inválida. A data não existe.");
+                    return;
+                }
+            } catch (Exception e) {
+                System.out.println("Data de nascimento inválida. Por favor, siga o formato dd/MM/yyyy.");
+                return; // Sai do método sem salvar o funcionário
+            }
 
             System.out.println("Salario: ");
-            BigDecimal salario = new BigDecimal(reader.readLine());
-            
+            BigDecimal salario;
+            try {
+                salario = new BigDecimal(reader.readLine());
+                if (salario.compareTo(BigDecimal.ZERO) < 0) {
+                    System.out.println("Salário não pode ser negativo.");
+                    return; // Sai do método sem salvar o funcionário
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Salário inválido. Certifique-se de usar um valor numérico.");
+                return; // Sai do método sem salvar o funcionário
+            }
+
             System.out.println("Funcao: ");
             String funcao = reader.readLine();
 
@@ -65,7 +85,6 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         } catch (IOException e) {
             System.out.println("Erro ao ler valores de entrada!");
         }
-        
     }
 
     @Override
@@ -80,9 +99,12 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             System.out.println();
 
             switch (opcao) {
-                case 1 -> atualizarTodosFuncionarios(reader, funcionarios);
-                case 2 -> atualizarUmFuncionario(reader, funcionarios);
-                default -> System.out.println("Opção inválida.");
+                case 1 ->
+                    atualizarTodosFuncionarios(reader, funcionarios);
+                case 2 ->
+                    atualizarUmFuncionario(reader, funcionarios);
+                default ->
+                    System.out.println("Opção inválida.");
             }
 
             System.out.println();
@@ -90,7 +112,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             System.out.println("Erro de I/O: " + e.getMessage());
         }
     }
-    
+
     private int lerOpcao(BufferedReader reader) throws IOException {
         String input = reader.readLine();
         try {
@@ -119,7 +141,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         });
         funcionarioDao.atualizar(funcionarios);
     }
-    
+
     private void atualizarUmFuncionario(BufferedReader reader, List<Funcionario> funcionarios) throws IOException {
         System.out.println("Qual funcionário deseja alterar? ");
         for (int i = 0; i < funcionarios.size(); i++) {
@@ -141,11 +163,16 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         int opcaoAtualizacao = lerOpcao(reader);
 
         switch (opcaoAtualizacao) {
-            case 1 -> atualizarNome(reader, funcionarioSelecionado);
-            case 2 -> atualizarDataNascimento(reader, funcionarioSelecionado);
-            case 3 -> atualizarFuncao(reader, funcionarioSelecionado);
-            case 4 -> atualizarSalario(reader, funcionarioSelecionado);
-            default -> System.out.println("Opção inválida para alteração.");
+            case 1 ->
+                atualizarNome(reader, funcionarioSelecionado);
+            case 2 ->
+                atualizarDataNascimento(reader, funcionarioSelecionado);
+            case 3 ->
+                atualizarFuncao(reader, funcionarioSelecionado);
+            case 4 ->
+                atualizarSalario(reader, funcionarioSelecionado);
+            default ->
+                System.out.println("Opção inválida para alteração.");
         }
         funcionarioDao.atualizar(funcionarioSelecionado);
     }
@@ -179,12 +206,16 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         String input = reader.readLine();
         try {
             BigDecimal novoSalario = new BigDecimal(input);
+            if (novoSalario.compareTo(BigDecimal.ZERO) < 0) {
+                System.out.println("Salário não pode ser negativo.");
+                return;
+            }
             funcionario.setSalario(novoSalario);
         } catch (NumberFormatException e) {
             System.out.println("Salário inválido. Certifique-se de usar um valor numérico.");
         }
     }
-    
+
     @Override
     public void deletarFuncionario(BufferedReader reader) {
         try {
@@ -205,21 +236,21 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             System.out.println(ex);
         }
     }
-    
+
     @Override
     public void buscarTodosFuncionarios() {
-        List<Funcionario> funcionarios =  this.funcionarioDao.buscarTodos();
+        List<Funcionario> funcionarios = this.funcionarioDao.buscarTodos();
         funcionarios.forEach(System.out::println);
     }
 
     @Override
     public void agruparFuncionarios() {
-        List<Funcionario> funcionarios =  this.funcionarioDao.buscarTodos();
-        
-        Map<String,List<Funcionario>> funcionariosPorFuncao = funcionarios
-            .stream()
-            .collect(Collectors.groupingBy(Funcionario::getFuncao));
-        
+        List<Funcionario> funcionarios = this.funcionarioDao.buscarTodos();
+
+        Map<String, List<Funcionario>> funcionariosPorFuncao = funcionarios
+                .stream()
+                .collect(Collectors.groupingBy(Funcionario::getFuncao));
+
         funcionariosPorFuncao.forEach((String funcao, List<Funcionario> listaFuncionarios) -> {
             System.out.println("Função: " + funcao);
             listaFuncionarios.forEach(funcionario -> System.out.println("  - " + funcionario.getNome()));
@@ -231,21 +262,21 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         Locale localeBR = Locale.forLanguageTag("pt-BR");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(localeBR);
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
-        
-        List<Funcionario> funcionarios =  this.funcionarioDao.buscarTodos();
+
+        List<Funcionario> funcionarios = this.funcionarioDao.buscarTodos();
         BigDecimal total = funcionarios
                 .stream()
                 .map(Funcionario::getSalario)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         System.out.println("Valor total: " + decimalFormat.format(total));
-    }   
+    }
 
     @Override
     public void calcularQuantidadeSalarioMinimo() {
         BigDecimal salarioMinimo = SalarioMinimo.VALOR.valor;
-        
-        List<Funcionario> funcionarios =  this.funcionarioDao.buscarTodos();
-        funcionarios.forEach((Funcionario funcionario)->{
+
+        List<Funcionario> funcionarios = this.funcionarioDao.buscarTodos();
+        funcionarios.forEach((Funcionario funcionario) -> {
             BigDecimal qtdSalarios = funcionario.getSalario().divide(salarioMinimo, 2, RoundingMode.HALF_UP);
             System.out.println("  - " + funcionario.getNome() + ": " + qtdSalarios);
         });
@@ -273,11 +304,11 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     public void buscarFuncionarioMaisVelho() {
         Funcionario funcionario = funcionarioDao.buscarFuncionarioMaisVelho();
-        if(funcionario != null){
+        if (funcionario != null) {
             int idade = funcionario.getDataNascimento().until(LocalDate.now()).getYears();
-            System.out.println("Nome = '" + funcionario.getNome() + "'" + 
-                    ", Idade = "+ "'" + idade + "'");
-        }else{
+            System.out.println("Nome = '" + funcionario.getNome() + "'"
+                    + ", Idade = " + "'" + idade + "'");
+        } else {
             System.out.println("Nenhum funcionário encontrado");
         }
     }
