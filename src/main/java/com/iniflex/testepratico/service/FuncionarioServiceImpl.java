@@ -61,7 +61,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
                 }
             } catch (Exception e) {
                 System.out.println("Data de nascimento inválida. Por favor, siga o formato dd/MM/yyyy.");
-                return; // Sai do método sem salvar o funcionário
+                return;
             }
 
             System.out.println("Salario: ");
@@ -70,11 +70,11 @@ public class FuncionarioServiceImpl implements FuncionarioService {
                 salario = new BigDecimal(reader.readLine());
                 if (salario.compareTo(BigDecimal.ZERO) < 0) {
                     System.out.println("Salário não pode ser negativo.");
-                    return; // Sai do método sem salvar o funcionário
+                    return;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Salário inválido. Certifique-se de usar um valor numérico.");
-                return; // Sai do método sem salvar o funcionário
+                return;
             }
 
             System.out.println("Funcao: ");

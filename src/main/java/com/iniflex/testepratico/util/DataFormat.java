@@ -11,5 +11,6 @@ import java.time.format.DateTimeFormatter;
  * @author lucas
  */
 public @interface DataFormat {
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 }

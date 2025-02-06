@@ -12,12 +12,20 @@ import java.util.List;
  * @author lucas
  */
 public interface FuncionarioDao {
+
     void salvar(Funcionario funcionario);
+
     void salvar(List<Funcionario> funcionario);
+
     void atualizar(Funcionario funcionario);
+
     void atualizar(List<Funcionario> funcionarios);
+
     void deletar(Long id);
+
     List<Funcionario> buscarPorMeses(List<Integer> meses);
+
     List<Funcionario> buscarTodos();
+
     Funcionario buscarFuncionarioMaisVelho();
 }

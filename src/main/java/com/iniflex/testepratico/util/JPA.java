@@ -15,10 +15,11 @@ import javax.persistence.Persistence;
  * @author lucas
  */
 public class JPA {
+
     private static final EntityManagerFactory entityManager = initEntityManagerFactory();
 
     private static EntityManagerFactory initEntityManagerFactory() {
-        
+
         try {
             Configuration configuration = new Configuration().configure();
 
@@ -41,16 +42,15 @@ public class JPA {
             String dbName = cleanUrl.substring(cleanUrl.lastIndexOf("/") + 1);
 
             dbName = dbName.toLowerCase();
-            
+
             String defaultUrl = jdbcUrl.replace(dbName, "postgres");
-            
-            try (Connection conn = DriverManager.getConnection(defaultUrl, username, password);
-                 Statement stmt = conn.createStatement()) {
-                
+
+            try (Connection conn = DriverManager.getConnection(defaultUrl, username, password); Statement stmt = conn.createStatement()) {
+
                 ResultSet rs = stmt.executeQuery(
-                    "SELECT 1 FROM pg_database WHERE datname = '" + dbName + "'"
+                        "SELECT 1 FROM pg_database WHERE datname = '" + dbName + "'"
                 );
-                
+
                 if (!rs.next()) {
                     stmt.executeUpdate("CREATE DATABASE " + dbName);
                     System.out.println("Banco de dados " + dbName + " criado com sucesso!");
@@ -60,8 +60,7 @@ public class JPA {
             throw new RuntimeException("Falha ao criar banco de dados", e);
         }
     }
-    
-    
+
     public static EntityManagerFactory getEntityManagerFactory() {
         return entityManager;
     }

@@ -22,8 +22,8 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
     private FuncionarioDaoImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
-    
-    public static FuncionarioDaoImpl build(EntityManagerFactory entityManagerFactory){
+
+    public static FuncionarioDaoImpl build(EntityManagerFactory entityManagerFactory) {
         return new FuncionarioDaoImpl(entityManagerFactory);
     }
 
@@ -37,12 +37,15 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
             em.persist(funcionario);
             tx.commit();
         } catch (Exception e) {
-            if (tx != null && tx.isActive()) tx.rollback();
-            throw new RuntimeException("Erro ao salvar funcionário! ",e);
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Erro ao salvar funcionário! ", e);
         } finally {
             em.close();
         }
     }
+
     @Override
     public void salvar(List<Funcionario> funcionarios) {
         EntityManager em = entityManagerFactory.createEntityManager();
@@ -55,8 +58,10 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
             }
             tx.commit();
         } catch (Exception e) {
-            if (tx != null && tx.isActive()) tx.rollback();
-            throw new RuntimeException("Erro ao salvar lista de funcionários! ",e);
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Erro ao salvar lista de funcionários! ", e);
         } finally {
             em.close();
         }
@@ -72,33 +77,37 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
             em.merge(funcionario);
             tx.commit();
         } catch (Exception e) {
-            if (tx != null && tx.isActive()) tx.rollback();
-            throw new RuntimeException("Erro ao atualizar funcionário! ",e);
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Erro ao atualizar funcionário! ", e);
         } finally {
             em.close();
         }
     }
-    
+
     @Override
     public void atualizar(List<Funcionario> funcionarios) {
-    EntityManager em = entityManagerFactory.createEntityManager();
-    EntityTransaction tx = null;
-    try {
-        tx = em.getTransaction();
-        tx.begin();
-        
-        for (Funcionario funcionario : funcionarios) {
-            em.merge(funcionario);
+        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityTransaction tx = null;
+        try {
+            tx = em.getTransaction();
+            tx.begin();
+
+            for (Funcionario funcionario : funcionarios) {
+                em.merge(funcionario);
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Erro ao atualizar lista de funcionários! ", e);
+        } finally {
+            em.close();
         }
-        
-        tx.commit();
-    } catch (Exception e) {
-        if (tx != null && tx.isActive()) tx.rollback();
-        throw new RuntimeException("Erro ao atualizar lista de funcionários! ", e);
-    } finally {
-        em.close();
     }
-}
 
     @Override
     public void deletar(Long id) {
@@ -113,13 +122,15 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
             }
             tx.commit();
         } catch (Exception e) {
-            if (tx != null && tx.isActive()) tx.rollback();
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
             throw new RuntimeException("Erro ao excluir funcionário! ", e);
         } finally {
             em.close();
         }
     }
-    
+
     @Override
     public List<Funcionario> buscarTodos() {
         EntityManager em = entityManagerFactory.createEntityManager();
@@ -138,7 +149,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
             TypedQuery<Funcionario> query = em.createQuery(
-                "SELECT f FROM Funcionario f WHERE MONTH(f.dataNascimento) IN :meses ORDER BY MONTH(f.dataNascimento)", Funcionario.class);
+                    "SELECT f FROM Funcionario f WHERE MONTH(f.dataNascimento) IN :meses ORDER BY MONTH(f.dataNascimento)", Funcionario.class);
             query.setParameter("meses", meses);
             return query.getResultList();
         } catch (Exception e) {
@@ -153,7 +164,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
             TypedQuery<Funcionario> query = em.createQuery(
-                "SELECT f FROM Funcionario f ORDER BY f.dataNascimento ASC", Funcionario.class);
+                    "SELECT f FROM Funcionario f ORDER BY f.dataNascimento ASC", Funcionario.class);
             query.setMaxResults(1);
             return query.getSingleResult();
         } catch (Exception e) {

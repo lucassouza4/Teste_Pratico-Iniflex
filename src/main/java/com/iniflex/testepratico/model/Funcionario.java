@@ -21,65 +21,65 @@ import javax.persistence.Table;
  *
  * @author lucas
  */
-
 @Entity
 @Table(name = "funcionarios")
 public class Funcionario extends Pessoa implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private BigDecimal salario;
-    
+
     private String funcao;
-    
+
     protected Funcionario() {
         super(null, null);
     }
-    
-    private Funcionario(BigDecimal salario, String funcao, String nome, LocalDate dataNascimento){
-        super(nome,dataNascimento);
+
+    private Funcionario(BigDecimal salario, String funcao, String nome, LocalDate dataNascimento) {
+        super(nome, dataNascimento);
         this.salario = salario;
         this.funcao = funcao;
     }
-    
-    public static Funcionario build(BigDecimal salario, String funcao, String nome, LocalDate dataNascimento){
-        return new Funcionario(salario,funcao,nome,dataNascimento);
+
+    public static Funcionario build(BigDecimal salario, String funcao, String nome, LocalDate dataNascimento) {
+        return new Funcionario(salario, funcao, nome, dataNascimento);
     }
-    
+
     public Long getId() {
         return id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
-    
-    public BigDecimal getSalario(){
+
+    public BigDecimal getSalario() {
         return salario;
     }
-    
-    public BigDecimal setSalario(BigDecimal salario){
+
+    public BigDecimal setSalario(BigDecimal salario) {
         return this.salario = salario;
     }
-    
-    public String getFuncao(){
+
+    public String getFuncao() {
         return funcao;
     }
-    
-    public String setFuncao(String funcao){
+
+    public String setFuncao(String funcao) {
         return this.funcao = funcao;
     }
-    
+
     @Override
     public String toString() {
         Locale localeBR = Locale.forLanguageTag("pt-BR");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(localeBR);
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
-        
-        return "nome = '" + super.getNome() + "'" + 
-                ", nascimento = '"+ super.getDataNascimento().format(DataFormat.formatter) + "'" + 
-                ", salario = '"+ decimalFormat.format(salario) + "'" +
-                ", funcao = '"+ funcao + "'"; 
+
+        return "nome = '" + super.getNome() + "'"
+                + ", nascimento = '" + super.getDataNascimento().format(DataFormat.formatter) + "'"
+                + ", salario = '" + decimalFormat.format(salario) + "'"
+                + ", funcao = '" + funcao + "'";
     }
 }

@@ -12,23 +12,23 @@ import javax.persistence.MappedSuperclass;
  *
  * @author lucas
  */
-
 @MappedSuperclass
 public abstract class Pessoa {
+
     @Column(name = "nome", nullable = false)
     private String nome;
-    
+
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
-    
+
     protected Pessoa() {
     }
-    
+
     protected Pessoa(String nome, LocalDate dataNascimento) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
     }
-    
+
     public String getNome() {
         return nome;
     }

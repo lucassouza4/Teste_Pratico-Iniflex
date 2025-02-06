@@ -31,7 +31,6 @@ public class FuncionarioServiceImplUnitTest {
     private Funcionario funcionario1;
     private Funcionario funcionario2;
 
-    // Stub do DAO para simular operações
     static class FuncionarioDaoStub implements FuncionarioDao {
 
         private final List<Funcionario> funcionarios = new ArrayList<>();
@@ -132,23 +131,21 @@ public class FuncionarioServiceImplUnitTest {
 
     @Test
     void salvarFuncionario_ComDataInvalida_DeveLidarComErro() throws Exception {
-        String input = "Carlos Oliveira\n31/02/1990\n5000\nAnalista\n"; // Data inválida
+        String input = "Carlos Oliveira\n31/02/1990\n5000\nAnalista\n";
         BufferedReader reader = new BufferedReader(new StringReader(input));
 
         funcionarioService.salvarFuncionario(reader);
 
-        // Verifica se nenhum funcionário foi salvo
         assertTrue(funcionarioDaoStub.buscarTodos().isEmpty());
     }
 
     @Test
     void salvarFuncionario_ComSalarioInvalido_DeveLidarComErro() throws Exception {
-        String input = "Carlos Oliveira\n15/05/1990\nabc\nAnalista\n"; // Salário inválido
+        String input = "Carlos Oliveira\n15/05/1990\nabc\nAnalista\n";
         BufferedReader reader = new BufferedReader(new StringReader(input));
 
         funcionarioService.salvarFuncionario(reader);
 
-        // Verifica se nenhum funcionário foi salvo
         assertTrue(funcionarioDaoStub.buscarTodos().isEmpty());
     }
 
@@ -185,7 +182,6 @@ public class FuncionarioServiceImplUnitTest {
 
         funcionarioService.atualizarFuncionarios(reader);
 
-        // Verifica se o salário não foi alterado
         assertEquals(BigDecimal.valueOf(3000), funcionarioDaoStub.buscarTodos().get(0).getSalario());
     }
 
@@ -197,7 +193,6 @@ public class FuncionarioServiceImplUnitTest {
 
         funcionarioService.atualizarFuncionarios(reader);
 
-        // Verifica se os salários não foram alterados
         List<Funcionario> funcionarios = funcionarioDaoStub.buscarTodos();
         assertEquals(BigDecimal.valueOf(3000), funcionarios.get(0).getSalario());
         assertEquals(BigDecimal.valueOf(4000), funcionarios.get(1).getSalario());
@@ -211,7 +206,6 @@ public class FuncionarioServiceImplUnitTest {
 
         funcionarioService.atualizarFuncionarios(reader);
 
-        // Verifica se o nome do funcionário não foi alterado
         assertEquals("João Silva", funcionarioDaoStub.buscarTodos().get(0).getNome());
     }
 
@@ -234,7 +228,6 @@ public class FuncionarioServiceImplUnitTest {
 
         funcionarioService.deletarFuncionario(reader);
 
-        // Verifica se o funcionário ainda está na lista
         assertEquals(1, funcionarioDaoStub.buscarTodos().size());
     }
 
@@ -266,7 +259,6 @@ public class FuncionarioServiceImplUnitTest {
     void calcularTotalSalario_ComListaVazia_DeveLidarComErro() {
         funcionarioService.calcularTotalSalario();
 
-        // Verifica se o total é zero
         BigDecimal total = funcionarioDaoStub.buscarTodos().stream()
                 .map(Funcionario::getSalario)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -293,7 +285,6 @@ public class FuncionarioServiceImplUnitTest {
     void buscarFuncionarioMaisVelho_ComListaVazia_DeveLidarComErro() {
         funcionarioService.buscarFuncionarioMaisVelho();
 
-        // Verifica se o resultado é nulo
         assertNull(funcionarioDaoStub.buscarFuncionarioMaisVelho());
     }
 
@@ -317,7 +308,6 @@ public class FuncionarioServiceImplUnitTest {
 
         funcionarioService.imprimirAniversariantes(reader);
 
-        // Verifica se nenhum mês foi filtrado
         assertNull(funcionarioDaoStub.mesesFiltro);
     }
 }

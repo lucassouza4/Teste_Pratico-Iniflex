@@ -118,7 +118,7 @@ public class TestePratico {
                 BigDecimal salario = BigDecimal.valueOf(Double.parseDouble(linha[2]));
                 String funcao = linha[3];
 
-                Funcionario funcionario = Funcionario.build(salario, funcao, nome,dataNascimento);
+                Funcionario funcionario = Funcionario.build(salario, funcao, nome, dataNascimento);
                 funcionarios.add(funcionario);
             }
         } catch (IOException e) {
