@@ -269,4 +269,16 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             System.err.println("Erro: Certifique-se de inserir números separados por vírgula.");
         }
     }
+
+    @Override
+    public void findFuncionarioMaisVelho() {
+        Funcionario funcionario = funcionarioDao.findFuncionarioMaisVelho();
+        if(funcionario != null){
+            int idade = funcionario.getDataNascimento().until(LocalDate.now()).getYears();
+            System.out.println("Nome = '" + funcionario.getNome() + "'" + 
+                    ", Idade = "+ "'" + idade + "'");
+        }else{
+            System.out.println("Nenhum funcionário encontrado");
+        }
+    }
 }

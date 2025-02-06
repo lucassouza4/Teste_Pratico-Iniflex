@@ -73,7 +73,7 @@ public class Funcionario extends Pessoa implements Serializable {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(localeBR);
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
         
-        return "nome ='" + super.getNome() + "'" + 
+        return "nome = '" + super.getNome() + "'" + 
                 ", nascimento = '"+ super.getDataNascimento().format(DataFormat.formatter) + "'" + 
                 ", salario = '"+ decimalFormat.format(salario) + "'" +
                 ", funcao = '"+ funcao + "'"; 

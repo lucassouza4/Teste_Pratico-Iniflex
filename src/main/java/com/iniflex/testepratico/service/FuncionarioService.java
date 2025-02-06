@@ -22,4 +22,5 @@ public interface FuncionarioService {
     void totalSalario();
     void salarioMinimo();
     void imprimirAniversariantes(BufferedReader reader);
+    void findFuncionarioMaisVelho();
 }

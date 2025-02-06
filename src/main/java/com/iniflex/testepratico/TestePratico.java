@@ -44,6 +44,7 @@ public class TestePratico {
            System.out.println("6 - Total dos salários. ");
            System.out.println("7 - Quantidade de salários mínimo por funcionário. ");
            System.out.println("8 - Aniversariantes. ");
+           System.out.println("9 - Funcionário de maior idade. ");
            System.out.println("0 - Sair. ");
 
            String input = reader.readLine();
@@ -64,6 +65,7 @@ public class TestePratico {
                case 6 -> funcionarioService.totalSalario();
                case 7 -> funcionarioService.salarioMinimo();
                case 8 -> funcionarioService.imprimirAniversariantes(reader);
+               case 9 -> funcionarioService.findFuncionarioMaisVelho();
                case 0 -> System.out.println("Saindo...");
                default -> System.out.println("Opção inválida.");
            }

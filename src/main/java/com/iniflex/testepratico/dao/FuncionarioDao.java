@@ -19,4 +19,5 @@ public interface FuncionarioDao {
     Funcionario findById(Long id);
     List<Funcionario> findByAniversarioMeses(List<Integer> meses);
     List<Funcionario> findAll();
+    Funcionario findFuncionarioMaisVelho();
 }

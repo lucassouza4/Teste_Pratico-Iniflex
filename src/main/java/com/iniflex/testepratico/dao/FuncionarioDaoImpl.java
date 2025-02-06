@@ -134,4 +134,19 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
             em.close();
         }
     }
+
+    @Override
+    public Funcionario findFuncionarioMaisVelho() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            TypedQuery<Funcionario> query = em.createQuery(
+                "SELECT f FROM Funcionario f ORDER BY f.dataNascimento ASC", Funcionario.class);
+            query.setMaxResults(1);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar funcionário", e);
+        } finally {
+            em.close();
+        }
+    }
 }
