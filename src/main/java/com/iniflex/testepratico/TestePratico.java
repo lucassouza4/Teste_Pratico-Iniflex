@@ -31,6 +31,7 @@ import javax.persistence.EntityManagerFactory;
 public class TestePratico {
 
     public static void main(String[] args) throws IOException {
+        // Injeção de dependências
         EntityManagerFactory entityManager = JPA.getEntityManagerFactory();
         FuncionarioDao funcionarioDao = FuncionarioDaoImpl.build(entityManager);
         FuncionarioService funcionarioService = FuncionarioServiceImpl.build(funcionarioDao);
@@ -73,23 +74,23 @@ public class TestePratico {
                     }
                 }
                 case 2 ->
-                    funcionarioService.saveFuncionario(reader);
+                    funcionarioService.salvarFuncionario(reader);
                 case 3 ->
-                    funcionarioService.findAllFuncionarios();
+                    funcionarioService.buscarTodosFuncionarios();
                 case 4 ->
                     funcionarioService.agruparFuncionarios();
                 case 5 ->
-                    funcionarioService.updateFuncionarios(reader);
+                    funcionarioService.atualizarFuncionarios(reader);
                 case 6 ->
-                    funcionarioService.deleteFuncionario(reader);
+                    funcionarioService.deletarFuncionario(reader);
                 case 7 ->
-                    funcionarioService.totalSalario();
+                    funcionarioService.calcularTotalSalario();
                 case 8 ->
-                    funcionarioService.salarioMinimo();
+                    funcionarioService.calcularQuantidadeSalarioMinimo();
                 case 9 ->
                     funcionarioService.imprimirAniversariantes(reader);
                 case 10 ->
-                    funcionarioService.findFuncionarioMaisVelho();
+                    funcionarioService.buscarFuncionarioMaisVelho();
                 case 0 ->
                     System.out.println("Saindo...");
                 default ->

@@ -14,14 +14,13 @@ import java.util.List;
  */
 public interface FuncionarioService {
     void salvarFuncionarios(List<Funcionario> funcionarios);
-    void saveFuncionario(BufferedReader reader);
-    void updateFuncionarios(BufferedReader reader);
-    void deleteFuncionario(BufferedReader reader);
-    Funcionario findFuncionarioById(Long id);
-    void findAllFuncionarios();
+    void salvarFuncionario(BufferedReader reader);
+    void atualizarFuncionarios(BufferedReader reader);
+    void deletarFuncionario(BufferedReader reader);
+    void buscarTodosFuncionarios();
     void agruparFuncionarios();
-    void totalSalario();
-    void salarioMinimo();
+    void calcularTotalSalario();
+    void calcularQuantidadeSalarioMinimo();
     void imprimirAniversariantes(BufferedReader reader);
-    void findFuncionarioMaisVelho();
+    void buscarFuncionarioMaisVelho();
 }

@@ -28,7 +28,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
     }
 
     @Override
-    public void save(Funcionario funcionario) {
+    public void salvar(Funcionario funcionario) {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction tx = null;
         try {
@@ -44,7 +44,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
         }
     }
     @Override
-    public void save(List<Funcionario> funcionarios) {
+    public void salvar(List<Funcionario> funcionarios) {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction tx = null;
         try {
@@ -63,7 +63,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
     }
 
     @Override
-    public void update(Funcionario funcionario) {
+    public void atualizar(Funcionario funcionario) {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction tx = null;
         try {
@@ -80,7 +80,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
     }
     
     @Override
-    public void update(List<Funcionario> funcionarios) {
+    public void atualizar(List<Funcionario> funcionarios) {
     EntityManager em = entityManagerFactory.createEntityManager();
     EntityTransaction tx = null;
     try {
@@ -101,7 +101,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
 }
 
     @Override
-    public void delete(Long id) {
+    public void deletar(Long id) {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction tx = null;
         try {
@@ -121,7 +121,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
     }
     
     @Override
-    public List<Funcionario> findAll() {
+    public List<Funcionario> buscarTodos() {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
             TypedQuery<Funcionario> query = em.createQuery("SELECT f FROM Funcionario f ORDER BY f.nome", Funcionario.class);
@@ -134,7 +134,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
     }
 
     @Override
-    public List<Funcionario> findByAniversarioMeses(List<Integer> meses) {
+    public List<Funcionario> buscarPorMeses(List<Integer> meses) {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
             TypedQuery<Funcionario> query = em.createQuery(
@@ -149,7 +149,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
     }
 
     @Override
-    public Funcionario findFuncionarioMaisVelho() {
+    public Funcionario buscarFuncionarioMaisVelho() {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
             TypedQuery<Funcionario> query = em.createQuery(

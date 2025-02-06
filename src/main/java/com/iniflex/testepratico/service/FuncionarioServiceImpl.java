@@ -39,12 +39,12 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public void salvarFuncionarios(List<Funcionario> funcionarios){
-        funcionarioDao.save(funcionarios);
+        funcionarioDao.salvar(funcionarios);
         System.out.println("Funcionários salvos");
     }
     
     @Override
-    public void saveFuncionario(BufferedReader reader) {
+    public void salvarFuncionario(BufferedReader reader) {
         try {
             System.out.println("Nome: ");
             String nome = reader.readLine();
@@ -61,7 +61,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             String funcao = reader.readLine();
 
             Funcionario funcionario = Funcionario.build(salario, funcao, nome, dataNascimento);
-            funcionarioDao.save(funcionario);
+            funcionarioDao.salvar(funcionario);
         } catch (IOException e) {
             System.out.println("Erro ao ler valores de entrada!");
         }
@@ -69,8 +69,8 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
 
     @Override
-    public void updateFuncionarios(BufferedReader reader) {
-        List<Funcionario> funcionarios = funcionarioDao.findAll();
+    public void atualizarFuncionarios(BufferedReader reader) {
+        List<Funcionario> funcionarios = funcionarioDao.buscarTodos();
         try {
             System.out.println("Deseja alterar quantos funcionários? ");
             System.out.println("1 - Todos.");
@@ -117,7 +117,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             BigDecimal novoSalario = funcionario.getSalario().multiply(BigDecimal.valueOf(fatorAumento));
             funcionario.setSalario(novoSalario);
         });
-        funcionarioDao.update(funcionarios);
+        funcionarioDao.atualizar(funcionarios);
     }
     
     private void atualizarUmFuncionario(BufferedReader reader, List<Funcionario> funcionarios) throws IOException {
@@ -147,7 +147,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             case 4 -> atualizarSalario(reader, funcionarioSelecionado);
             default -> System.out.println("Opção inválida para alteração.");
         }
-        funcionarioDao.update(funcionarioSelecionado);
+        funcionarioDao.atualizar(funcionarioSelecionado);
     }
 
     private void atualizarNome(BufferedReader reader, Funcionario funcionario) throws IOException {
@@ -186,9 +186,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
     
     @Override
-    public void deleteFuncionario(BufferedReader reader) {
+    public void deletarFuncionario(BufferedReader reader) {
         try {
-            List<Funcionario> funcionarios = funcionarioDao.findAll();
+            List<Funcionario> funcionarios = funcionarioDao.buscarTodos();
             System.out.println("Qual funcionário deseja excluir? ");
             for (int i = 0; i < funcionarios.size(); i++) {
                 Funcionario f = funcionarios.get(i);
@@ -200,26 +200,21 @@ public class FuncionarioServiceImpl implements FuncionarioService {
                 return;
             }
             Funcionario funcionarioSelecionado = funcionarios.get(indiceFuncionario);
-            funcionarioDao.delete(funcionarioSelecionado.getId());
+            funcionarioDao.deletar(funcionarioSelecionado.getId());
         } catch (IOException ex) {
             System.out.println(ex);
         }
     }
-
+    
     @Override
-    public Funcionario findFuncionarioById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void findAllFuncionarios() {
-        List<Funcionario> funcionarios =  this.funcionarioDao.findAll();
+    public void buscarTodosFuncionarios() {
+        List<Funcionario> funcionarios =  this.funcionarioDao.buscarTodos();
         funcionarios.forEach(System.out::println);
     }
 
     @Override
     public void agruparFuncionarios() {
-        List<Funcionario> funcionarios =  this.funcionarioDao.findAll();
+        List<Funcionario> funcionarios =  this.funcionarioDao.buscarTodos();
         
         Map<String,List<Funcionario>> funcionariosPorFuncao = funcionarios
             .stream()
@@ -232,12 +227,12 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
 
     @Override
-    public void totalSalario() {
+    public void calcularTotalSalario() {
         Locale localeBR = Locale.forLanguageTag("pt-BR");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(localeBR);
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
         
-        List<Funcionario> funcionarios =  this.funcionarioDao.findAll();
+        List<Funcionario> funcionarios =  this.funcionarioDao.buscarTodos();
         BigDecimal total = funcionarios
                 .stream()
                 .map(Funcionario::getSalario)
@@ -246,10 +241,10 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }   
 
     @Override
-    public void salarioMinimo() {
+    public void calcularQuantidadeSalarioMinimo() {
         BigDecimal salarioMinimo = SalarioMinimo.VALOR.valor;
         
-        List<Funcionario> funcionarios =  this.funcionarioDao.findAll();
+        List<Funcionario> funcionarios =  this.funcionarioDao.buscarTodos();
         funcionarios.forEach((Funcionario funcionario)->{
             BigDecimal qtdSalarios = funcionario.getSalario().divide(salarioMinimo, 2, RoundingMode.HALF_UP);
             System.out.println("  - " + funcionario.getNome() + ": " + qtdSalarios);
@@ -266,7 +261,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
                     .map(Integer::parseInt)
                     .collect(Collectors.toList());
 
-            List<Funcionario> funcionarios = funcionarioDao.findByAniversarioMeses(meses);
+            List<Funcionario> funcionarios = funcionarioDao.buscarPorMeses(meses);
             funcionarios.forEach(System.out::println);
         } catch (IOException e) {
             System.err.println("Erro ao ler a entrada: " + e.getMessage());
@@ -276,8 +271,8 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
 
     @Override
-    public void findFuncionarioMaisVelho() {
-        Funcionario funcionario = funcionarioDao.findFuncionarioMaisVelho();
+    public void buscarFuncionarioMaisVelho() {
+        Funcionario funcionario = funcionarioDao.buscarFuncionarioMaisVelho();
         if(funcionario != null){
             int idade = funcionario.getDataNascimento().until(LocalDate.now()).getYears();
             System.out.println("Nome = '" + funcionario.getNome() + "'" + 
