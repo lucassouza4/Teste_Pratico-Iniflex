@@ -5,22 +5,30 @@
 package com.iniflex.testepratico.model;
 
 import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 /**
  *
  * @author lucas
  */
+
+@MappedSuperclass
 public abstract class Pessoa {
+    @Column(name = "nome", nullable = false)
     private String nome;
     
+    @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
+    
+    protected Pessoa() {
+    }
     
     protected Pessoa(String nome, LocalDate dataNascimento) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
     }
     
-    // Getters e Setters
     public String getNome() {
         return nome;
     }

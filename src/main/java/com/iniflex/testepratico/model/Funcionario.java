@@ -5,19 +5,34 @@
 package com.iniflex.testepratico.model;
 
 import com.iniflex.testepratico.util.DataFormat;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author lucas
  */
-public class Funcionario extends Pessoa {
+
+@Entity
+@Table(name = "funcionarios")
+public class Funcionario extends Pessoa implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     private BigDecimal salario;
     
     private String funcao;
+    
+    protected Funcionario() {
+        super(null, null);
+    }
     
     private Funcionario(BigDecimal salario, String funcao, String nome, LocalDate dataNascimento){
         super(nome,dataNascimento);
@@ -51,10 +66,9 @@ public class Funcionario extends Pessoa {
     
      @Override
     public String toString() {
-        return "Usuario{id='" + id + "'" + 
-                ", nome='" + super.getNome() + "'" + 
-                ", nascimento= '"+ super.getDataNascimento().format(DataFormat.formatter) + "'" + 
-                ", salario= '"+ salario + "'" +
-                ", funcao= '"+ funcao + "'}"; 
+        return "nome ='" + super.getNome() + "'" + 
+                ", nascimento = '"+ super.getDataNascimento().format(DataFormat.formatter) + "'" + 
+                ", salario = '"+ salario + "'" +
+                ", funcao = '"+ funcao + "'"; 
     }
 }
