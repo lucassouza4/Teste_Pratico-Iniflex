@@ -7,7 +7,10 @@ package com.iniflex.testepratico.model;
 import com.iniflex.testepratico.util.DataFormat;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
+import java.util.Locale;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -64,11 +67,15 @@ public class Funcionario extends Pessoa implements Serializable {
         return this.funcao = funcao;
     }
     
-     @Override
+    @Override
     public String toString() {
-        return "nome ='" + super.getNome() + "'" + 
+        Locale localeBR = Locale.forLanguageTag("pt-BR");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(localeBR);
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
+        
+        return "nome = '" + super.getNome() + "'" + 
                 ", nascimento = '"+ super.getDataNascimento().format(DataFormat.formatter) + "'" + 
-                ", salario = '"+ salario + "'" +
+                ", salario = '"+ decimalFormat.format(salario) + "'" +
                 ", funcao = '"+ funcao + "'"; 
     }
 }

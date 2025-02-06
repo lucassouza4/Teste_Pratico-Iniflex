@@ -28,7 +28,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
     }
 
     @Override
-    public void save(Funcionario funcionario) {
+    public void salvar(Funcionario funcionario) {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction tx = null;
         try {
@@ -43,9 +43,27 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
             em.close();
         }
     }
+    @Override
+    public void salvar(List<Funcionario> funcionarios) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityTransaction tx = null;
+        try {
+            tx = em.getTransaction();
+            tx.begin();
+            for (Funcionario funcionario : funcionarios) {
+                em.persist(funcionario);
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) tx.rollback();
+            throw new RuntimeException("Erro ao salvar lista de funcionários! ",e);
+        } finally {
+            em.close();
+        }
+    }
 
     @Override
-    public void update(Funcionario funcionario) {
+    public void atualizar(Funcionario funcionario) {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction tx = null;
         try {
@@ -62,7 +80,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
     }
     
     @Override
-    public void update(List<Funcionario> funcionarios) {
+    public void atualizar(List<Funcionario> funcionarios) {
     EntityManager em = entityManagerFactory.createEntityManager();
     EntityTransaction tx = null;
     try {
@@ -83,7 +101,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
 }
 
     @Override
-    public void delete(Long id) {
+    public void deletar(Long id) {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction tx = null;
         try {
@@ -101,20 +119,45 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
             em.close();
         }
     }
-
+    
     @Override
-    public Funcionario findById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<Funcionario> findAll() {
+    public List<Funcionario> buscarTodos() {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
-            TypedQuery<Funcionario> query = em.createQuery("SELECT f FROM Funcionario f", Funcionario.class);
+            TypedQuery<Funcionario> query = em.createQuery("SELECT f FROM Funcionario f ORDER BY f.nome", Funcionario.class);
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException("Erro ao buscar funcionários", e);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Funcionario> buscarPorMeses(List<Integer> meses) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            TypedQuery<Funcionario> query = em.createQuery(
+                "SELECT f FROM Funcionario f WHERE MONTH(f.dataNascimento) IN :meses ORDER BY MONTH(f.dataNascimento)", Funcionario.class);
+            query.setParameter("meses", meses);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar funcionários por mês de aniversário", e);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Funcionario buscarFuncionarioMaisVelho() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            TypedQuery<Funcionario> query = em.createQuery(
+                "SELECT f FROM Funcionario f ORDER BY f.dataNascimento ASC", Funcionario.class);
+            query.setMaxResults(1);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar funcionário", e);
         } finally {
             em.close();
         }
