@@ -51,6 +51,10 @@ public class Funcionario extends Pessoa implements Serializable {
         return id;
     }
     
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public BigDecimal getSalario(){
         return salario;
     }
