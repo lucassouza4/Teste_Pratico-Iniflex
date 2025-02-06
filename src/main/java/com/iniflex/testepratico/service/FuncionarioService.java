@@ -15,7 +15,7 @@ import java.util.List;
 public interface FuncionarioService {
     void saveFuncionario(BufferedReader reader);
     void updateFuncionarios(BufferedReader reader);
-    void deleteFuncionario(Long id);
+    void deleteFuncionario(BufferedReader reader);
     Funcionario findFuncionarioById(Long id);
     void findAllFuncionarios();
 }

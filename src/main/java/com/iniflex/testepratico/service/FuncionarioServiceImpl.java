@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -56,7 +58,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public void updateFuncionarios(BufferedReader reader) {
-        List<Funcionario> funcionarios = this.funcionarioDao.findAll();
+        List<Funcionario> funcionarios = funcionarioDao.findAll();
         try {
             System.out.println("Deseja alterar quantos funcionários? ");
             System.out.println("1 - Todos.");
@@ -172,8 +174,24 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
     
     @Override
-    public void deleteFuncionario(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void deleteFuncionario(BufferedReader reader) {
+        try {
+            List<Funcionario> funcionarios = funcionarioDao.findAll();
+            System.out.println("Qual funcionário deseja excluir? ");
+            for (int i = 0; i < funcionarios.size(); i++) {
+                Funcionario f = funcionarios.get(i);
+                System.out.println(i + " - " + f.getNome() + ": " + f.getFuncao());
+            }
+            int indiceFuncionario = lerOpcao(reader);
+            if (indiceFuncionario < 0 || indiceFuncionario >= funcionarios.size()) {
+                System.out.println("Índice de funcionário inválido.");
+                return;
+            }
+            Funcionario funcionarioSelecionado = funcionarios.get(indiceFuncionario);
+            funcionarioDao.delete(funcionarioSelecionado.getId());
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
     }
 
     @Override

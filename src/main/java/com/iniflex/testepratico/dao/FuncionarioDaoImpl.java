@@ -84,7 +84,22 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
 
     @Override
     public void delete(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityTransaction tx = null;
+        try {
+            tx = em.getTransaction();
+            tx.begin();
+            Funcionario funcionario = em.find(Funcionario.class, id);
+            if (funcionario != null) {
+                em.remove(funcionario);
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) tx.rollback();
+            throw new RuntimeException("Erro ao excluir funcionário! ", e);
+        } finally {
+            em.close();
+        }
     }
 
     @Override
