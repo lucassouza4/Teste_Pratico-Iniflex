@@ -64,4 +64,4 @@ Este projeto gerencia funcionários, realizando operações CRUD, cálculos de s
 
 ### **Pré-requisitos**
 1. PostgreSQL instalado.  
-2. Configurar `persistence.xml` com usuário/senha do banco.
+2. Configurar `persistence.xml` e `hibernate.cfg.xml` com usuário/senha e nome do banco.
