@@ -14,10 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 
@@ -37,56 +34,31 @@ public class TestePratico {
         
         int op = -1;
         
-         while (op != 0) {
-            System.out.println("1 - Adicionar funcionario. ");
-            System.out.println("2 - Listar funcionarios. ");
-            System.out.println("0 - Sair. ");
+        System.out.println("\n");
+        while (op != 0) {
+           System.out.println("1 - Adicionar funcionario. ");
+           System.out.println("2 - Listar funcionarios. ");
+           System.out.println("3 - Atualizar funcionario. ");
+           System.out.println("0 - Sair. ");
 
-            String input = reader.readLine();
+           String input = reader.readLine();
 
-            try {
-                op = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Por favor, insira um número válido.");
-                continue;
-            }
-            System.out.println("\n");
-            switch (op) {
-                case 1 -> adicionarFuncionario(funcionarioService, reader);
-                case 2 -> buscarFuncionarios(funcionarioService);
-                case 0 -> System.out.println("Saindo...");
-                default -> System.out.println("Opção inválida.");
-            }
-            System.out.println("\n");
+           try {
+               op = Integer.parseInt(input);
+           } catch (NumberFormatException e) {
+               System.out.println("Por favor, insira um número válido.");
+               continue;
+           }
+           System.out.println("\n");
+           switch (op) {
+               case 1 -> funcionarioService.saveFuncionario(reader);
+               case 2 -> funcionarioService.findAllFuncionarios();
+               case 3 -> funcionarioService.updateFuncionarios(reader);
+               case 0 -> System.out.println("Saindo...");
+               default -> System.out.println("Opção inválida.");
+           }
+           System.out.println("\n");
         }
-    }
-    
-    public static void adicionarFuncionario(FuncionarioService funcionarioService, BufferedReader reader){
-        try {
-            System.out.println("Nome: ");
-            String nome = reader.readLine();
-
-            System.out.println("Data de nascimento (formato dd/MM/yyyy): ");
-            String dataNascimentoStr = reader.readLine();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataNascimento = LocalDate.parse(dataNascimentoStr, formatter);
-
-            System.out.println("Salario: ");
-            BigDecimal salario = new BigDecimal(reader.readLine());
-            
-            System.out.println("Funcao: ");
-            String funcao = reader.readLine();
-
-            Funcionario f1 = Funcionario.build(salario, funcao, nome, dataNascimento);
-            funcionarioService.saveFuncionario(f1);
-            
-        } catch (IOException e) {
-            System.out.println("Erro ao ler valores de entrada!");
-        }
-    }
-    
-    public static void buscarFuncionarios(FuncionarioService funcionarioService){
-        List<Funcionario> funcionarios = funcionarioService.findAllFuncionarios();
-        funcionarios.forEach(System.out::println);
+         reader.close();
     }
 }

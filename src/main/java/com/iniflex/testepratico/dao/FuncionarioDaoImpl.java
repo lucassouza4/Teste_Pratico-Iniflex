@@ -38,7 +38,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
             tx.commit();
         } catch (Exception e) {
             if (tx != null && tx.isActive()) tx.rollback();
-            throw new RuntimeException("Erro ao salvar funcionário",e);
+            throw new RuntimeException("Erro ao salvar funcionário! ",e);
         } finally {
             em.close();
         }
@@ -46,8 +46,41 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
 
     @Override
     public void update(Funcionario funcionario) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityTransaction tx = null;
+        try {
+            tx = em.getTransaction();
+            tx.begin();
+            em.merge(funcionario);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) tx.rollback();
+            throw new RuntimeException("Erro ao atualizar funcionário! ",e);
+        } finally {
+            em.close();
+        }
     }
+    
+    @Override
+    public void update(List<Funcionario> funcionarios) {
+    EntityManager em = entityManagerFactory.createEntityManager();
+    EntityTransaction tx = null;
+    try {
+        tx = em.getTransaction();
+        tx.begin();
+        
+        for (Funcionario funcionario : funcionarios) {
+            em.merge(funcionario);
+        }
+        
+        tx.commit();
+    } catch (Exception e) {
+        if (tx != null && tx.isActive()) tx.rollback();
+        throw new RuntimeException("Erro ao atualizar lista de funcionários! ", e);
+    } finally {
+        em.close();
+    }
+}
 
     @Override
     public void delete(Long id) {

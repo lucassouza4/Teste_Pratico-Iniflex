@@ -5,6 +5,7 @@
 package com.iniflex.testepratico.service;
 
 import com.iniflex.testepratico.model.Funcionario;
+import java.io.BufferedReader;
 import java.util.List;
 
 /**
@@ -12,9 +13,9 @@ import java.util.List;
  * @author lucas
  */
 public interface FuncionarioService {
-    void saveFuncionario(Funcionario funcionario);
-    void updateFuncionario(Funcionario funcionario);
+    void saveFuncionario(BufferedReader reader);
+    void updateFuncionarios(BufferedReader reader);
     void deleteFuncionario(Long id);
     Funcionario findFuncionarioById(Long id);
-    List<Funcionario> findAllFuncionarios();
+    void findAllFuncionarios();
 }
