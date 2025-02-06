@@ -10,5 +10,5 @@
 - [ ] **3.9** – Imprimir o funcionário com a maior idade, exibindo os atributos: **nome** e **idade**.
 - [x] **3.10** – Imprimir a lista de funcionários por ordem alfabética.
 - [x] **3.11** – Imprimir o total dos salários dos funcionários.
-- [ ] **3.12** – Imprimir quantos salários mínimos ganha cada funcionário, considerando que o salário mínimo é **R$ 1212,00**.
+- [x] **3.12** – Imprimir quantos salários mínimos ganha cada funcionário, considerando que o salário mínimo é **R$ 1212,00**.
 
