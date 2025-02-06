@@ -13,10 +13,10 @@ import java.util.List;
  */
 public interface FuncionarioDao {
     void save(Funcionario funcionario);
+    void save(List<Funcionario> funcionario);
     void update(Funcionario funcionario);
     void update(List<Funcionario> funcionarios);
     void delete(Long id);
-    Funcionario findById(Long id);
     List<Funcionario> findByAniversarioMeses(List<Integer> meses);
     List<Funcionario> findAll();
     Funcionario findFuncionarioMaisVelho();

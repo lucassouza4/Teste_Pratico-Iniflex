@@ -43,6 +43,24 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
             em.close();
         }
     }
+    @Override
+    public void save(List<Funcionario> funcionarios) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityTransaction tx = null;
+        try {
+            tx = em.getTransaction();
+            tx.begin();
+            for (Funcionario funcionario : funcionarios) {
+                em.persist(funcionario);
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) tx.rollback();
+            throw new RuntimeException("Erro ao salvar lista de funcionários! ",e);
+        } finally {
+            em.close();
+        }
+    }
 
     @Override
     public void update(Funcionario funcionario) {
@@ -101,12 +119,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
             em.close();
         }
     }
-
-    @Override
-    public Funcionario findById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    
     @Override
     public List<Funcionario> findAll() {
         EntityManager em = entityManagerFactory.createEntityManager();
@@ -125,7 +138,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
             TypedQuery<Funcionario> query = em.createQuery(
-                "SELECT f FROM Funcionario f WHERE MONTH(f.dataNascimento) IN :meses ORDER BY f.dataNascimento", Funcionario.class);
+                "SELECT f FROM Funcionario f WHERE MONTH(f.dataNascimento) IN :meses ORDER BY MONTH(f.dataNascimento)", Funcionario.class);
             query.setParameter("meses", meses);
             return query.getResultList();
         } catch (Exception e) {

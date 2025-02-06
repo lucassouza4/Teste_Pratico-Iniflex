@@ -16,7 +16,6 @@ import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -38,6 +37,12 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         return new FuncionarioServiceImpl(funcionarioDao);
     }
 
+    @Override
+    public void salvarFuncionarios(List<Funcionario> funcionarios){
+        funcionarioDao.save(funcionarios);
+        System.out.println("Funcionários salvos");
+    }
+    
     @Override
     public void saveFuncionario(BufferedReader reader) {
         try {

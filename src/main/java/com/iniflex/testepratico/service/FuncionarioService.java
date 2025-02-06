@@ -13,6 +13,7 @@ import java.util.List;
  * @author lucas
  */
 public interface FuncionarioService {
+    void salvarFuncionarios(List<Funcionario> funcionarios);
     void saveFuncionario(BufferedReader reader);
     void updateFuncionarios(BufferedReader reader);
     void deleteFuncionario(BufferedReader reader);
