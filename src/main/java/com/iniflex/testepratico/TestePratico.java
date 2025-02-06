@@ -38,8 +38,10 @@ public class TestePratico {
         while (op != 0) {
            System.out.println("1 - Adicionar funcionário. ");
            System.out.println("2 - Listar funcionários. ");
-           System.out.println("3 - Atualizar funcionário. ");
-           System.out.println("4 - Excluir funcionário. ");
+           System.out.println("3 - Listar funcionários por função. ");
+           System.out.println("4 - Atualizar funcionário. ");
+           System.out.println("5 - Excluir funcionário. ");
+           System.out.println("6 - Total dos salários. ");
            System.out.println("0 - Sair. ");
 
            String input = reader.readLine();
@@ -54,8 +56,10 @@ public class TestePratico {
            switch (op) {
                case 1 -> funcionarioService.saveFuncionario(reader);
                case 2 -> funcionarioService.findAllFuncionarios();
-               case 3 -> funcionarioService.updateFuncionarios(reader);
-               case 4 -> funcionarioService.deleteFuncionario(reader);
+               case 3 -> funcionarioService.agruparFuncionarios();
+               case 4 -> funcionarioService.updateFuncionarios(reader);
+               case 5 -> funcionarioService.deleteFuncionario(reader);
+               case 6 -> funcionarioService.totalSalario(reader);
                case 0 -> System.out.println("Saindo...");
                default -> System.out.println("Opção inválida.");
            }

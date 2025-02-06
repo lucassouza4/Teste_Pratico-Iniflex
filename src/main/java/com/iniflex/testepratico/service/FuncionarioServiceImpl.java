@@ -9,11 +9,15 @@ import com.iniflex.testepratico.model.Funcionario;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -201,8 +205,38 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public void findAllFuncionarios() {
-        List<Funcionario> funcionarios =  this.funcionarioDao.findAll();
+        List<Funcionario> funcionarios =  this.funcionarioDao.findAll()
+            .stream()
+            .sorted(Comparator.comparing(Funcionario::getNome))
+            .collect(Collectors.toList());
         funcionarios.forEach(System.out::println);
     }
-    
+
+    @Override
+    public void agruparFuncionarios() {
+        List<Funcionario> funcionarios =  this.funcionarioDao.findAll();
+        
+        Map<String,List<Funcionario>> funcionariosPorFuncao = funcionarios
+            .stream()
+            .collect(Collectors.groupingBy(Funcionario::getFuncao));
+        
+        funcionariosPorFuncao.forEach((String funcao, List<Funcionario> listaFuncionarios) -> {
+            System.out.println("Função: " + funcao);
+            listaFuncionarios.forEach(funcionario -> System.out.println("  - " + funcionario.getNome()));
+        });
+    }
+
+    @Override
+    public void totalSalario(BufferedReader reader) {
+        Locale localeBR = Locale.forLanguageTag("pt-BR");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(localeBR);
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
+        
+        List<Funcionario> funcionarios =  this.funcionarioDao.findAll();
+        BigDecimal total = funcionarios
+                .stream()
+                .map(Funcionario::getSalario)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println("Valor total: " + decimalFormat.format(total));
+    }   
 }

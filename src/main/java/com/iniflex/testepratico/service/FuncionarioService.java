@@ -18,4 +18,6 @@ public interface FuncionarioService {
     void deleteFuncionario(BufferedReader reader);
     Funcionario findFuncionarioById(Long id);
     void findAllFuncionarios();
+    void agruparFuncionarios();
+    void totalSalario(BufferedReader reader);
 }
