@@ -42,6 +42,7 @@ public class TestePratico {
            System.out.println("4 - Atualizar funcionário. ");
            System.out.println("5 - Excluir funcionário. ");
            System.out.println("6 - Total dos salários. ");
+           System.out.println("7 - Quantidade de salários mínimo por funcionário. ");
            System.out.println("0 - Sair. ");
 
            String input = reader.readLine();
@@ -59,7 +60,8 @@ public class TestePratico {
                case 3 -> funcionarioService.agruparFuncionarios();
                case 4 -> funcionarioService.updateFuncionarios(reader);
                case 5 -> funcionarioService.deleteFuncionario(reader);
-               case 6 -> funcionarioService.totalSalario(reader);
+               case 6 -> funcionarioService.totalSalario();
+               case 7 -> funcionarioService.salarioMinimo();
                case 0 -> System.out.println("Saindo...");
                default -> System.out.println("Opção inválida.");
            }

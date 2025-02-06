@@ -6,9 +6,11 @@ package com.iniflex.testepratico.service;
 
 import com.iniflex.testepratico.dao.FuncionarioDao;
 import com.iniflex.testepratico.model.Funcionario;
+import com.iniflex.testepratico.util.SalarioMinimo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
@@ -227,7 +229,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
 
     @Override
-    public void totalSalario(BufferedReader reader) {
+    public void totalSalario() {
         Locale localeBR = Locale.forLanguageTag("pt-BR");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(localeBR);
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
@@ -239,4 +241,15 @@ public class FuncionarioServiceImpl implements FuncionarioService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         System.out.println("Valor total: " + decimalFormat.format(total));
     }   
+
+    @Override
+    public void salarioMinimo() {
+        BigDecimal salarioMinimo = SalarioMinimo.VALOR.valor;
+        
+        List<Funcionario> funcionarios =  this.funcionarioDao.findAll();
+        funcionarios.forEach((Funcionario funcionario)->{
+            BigDecimal qtdSalarios = funcionario.getSalario().divide(salarioMinimo, 2, RoundingMode.HALF_UP);
+            System.out.println("  - " + funcionario.getNome() + ": " + qtdSalarios);
+        });
+    }
 }

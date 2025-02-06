@@ -19,5 +19,6 @@ public interface FuncionarioService {
     Funcionario findFuncionarioById(Long id);
     void findAllFuncionarios();
     void agruparFuncionarios();
-    void totalSalario(BufferedReader reader);
+    void totalSalario();
+    void salarioMinimo();
 }

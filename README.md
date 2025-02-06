@@ -4,11 +4,11 @@
   - Informação de data deve ser exibida no formato `dd/mm/aaaa`.
   - Informação de valor numérico deve ser exibida formatada com separador de milhar como ponto e decimal como vírgula.
 - [x] **3.4** – Os funcionários receberam 10% de aumento de salário, atualizar a lista de funcionários com novo valor.
-- [ ] **3.5** – Agrupar os funcionários por função em um `Map<String, List<Funcionario>>`, sendo a chave a “função” e o valor a “lista de funcionários”.
-- [ ] **3.6** – Imprimir os funcionários, agrupados por função.
+- [x] **3.5** – Agrupar os funcionários por função em um `Map<String, List<Funcionario>>`
+- [x] **3.6** – Imprimir os funcionários, agrupados por função.
 - [ ] **3.8** – Imprimir os funcionários que fazem aniversário nos meses `10` e `12`.
 - [ ] **3.9** – Imprimir o funcionário com a maior idade, exibindo os atributos: **nome** e **idade**.
 - [x] **3.10** – Imprimir a lista de funcionários por ordem alfabética.
-- [ ] **3.11** – Imprimir o total dos salários dos funcionários.
+- [x] **3.11** – Imprimir o total dos salários dos funcionários.
 - [ ] **3.12** – Imprimir quantos salários mínimos ganha cada funcionário, considerando que o salário mínimo é **R$ 1212,00**.
 
